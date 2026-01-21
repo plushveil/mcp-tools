@@ -1,0 +1,23 @@
+{
+  "manifest_version": "0.3",
+  "name": "mcp-tools",
+  "version": "1.0.0",
+  "description": "Applies all raw MCP Bundles (MCPB) found in the current working directories `./tools/` folder.",
+  "author": {
+    "name": "Plushveil"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/plushveil/mcp-tools.git"
+  },
+  "server": {
+    "type": "node",
+    "entry_point": "mcp-tools.ts",
+    "mcp_config": {
+      "command": "node",
+      "args": [
+        "${__dirname}/mcp-tools.ts"
+      ]
+    }
+  }
+}

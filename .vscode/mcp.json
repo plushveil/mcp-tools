@@ -1,0 +1,12 @@
+{
+	"servers": {
+		"mcp-tools": {
+			"type": "stdio",
+			"command": "zsh",
+			"args": [
+				"-c",
+				"source $HOME/.zshrc >/dev/null 2>&1 && node mcp-tools.ts"
+			]
+		}
+	},
+}

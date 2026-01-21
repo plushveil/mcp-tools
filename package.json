@@ -1,0 +1,28 @@
+{
+  "name": "@plushveil/mcp-tools",
+  "version": "1.0.0",
+  "description": "",
+  "main": "mcp-tools.ts",
+  "bin": {
+    "mcp-tools": "./mcp-tools.ts"
+  },
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/plushveil/mcp-tools.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "UNLICENSED",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/plushveil/mcp-tools/issues"
+  },
+  "homepage": "https://github.com/plushveil/mcp-tools#readme",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.25.3"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.9"
+  }
+}

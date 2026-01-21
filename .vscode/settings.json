@@ -1,0 +1,8 @@
+{
+  "chat.mcp.gallery.enabled": true,
+  "chat.mcp.serverSampling": {
+    "mcp-tools/.vscode/mcp.json: mcp-tools": {
+      "allowedOutsideChat": true
+    }
+  }
+}
