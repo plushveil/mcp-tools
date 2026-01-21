@@ -73,7 +73,8 @@ export async function callTool (name: string, input: Record<string, string>) : P
         isError: true,
       }
     }
-    const result = await toolModule.default(input, sample)
+    let result = await toolModule.default(input, sample)
+    if (typeof result !== 'object' || !result) result = {}
     return {
       content: Array.isArray(result.content) ? result.content : [],
       isError: typeof result.isError === 'boolean' ? result.isError : false,
