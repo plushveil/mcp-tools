@@ -1,8 +1,6 @@
 import type { JSONRPCResponse } from '../types.d.ts'
 
 import console from '../utils/console.ts'
-import * as prompts from './prompts.ts'
-import * as resouces from './resources.ts'
 import * as tools from './tools.ts'
 
 const internalState: InternalState = {
