@@ -1,6 +1,8 @@
 import type { JSONRPCRequest, JSONRPCResponse } from '../../types.d.ts'
 import type { ResourceContent } from '../resources/read.ts'
 
+import * as prompts from '../../src/prompts.ts'
+
 /**
  *
  */
@@ -12,7 +14,7 @@ type PromptsGetRequest = {
 /**
  *
  */
-type PromptsGetResponse = {
+export type PromptsGetResponse = {
   description: string,
   messages: PromptMessage[]
 }
@@ -66,11 +68,7 @@ export default async function promptsGet (request: JSONRPCRequest<PromptsGetRequ
   const response: JSONRPCResponse<PromptsGetResponse> = {
     jsonrpc: '2.0',
     id: request.id,
-    result: {
-      description: '',
-      messages: [
-      ],
-    }
+    result: await prompts.getPrompt(request.params?.name || '', request.params?.arguments || {})
   }
   return response
 }

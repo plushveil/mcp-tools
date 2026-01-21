@@ -1,5 +1,7 @@
 import type { JSONRPCRequest, JSONRPCResponse, PaginationRequest, PaginationResponse } from '../../types.d.ts'
 
+import * as prompts from '../../src/prompts.ts'
+
 type PromptsListRequest = {} & PaginationRequest
 
 type PromptsListResponse = {
@@ -13,7 +15,7 @@ type PromptsListResponse = {
  * arguments: Optional list of arguments for customization
  * @see https://modelcontextprotocol.info/specification/2024-11-05/server/prompts/#prompt
  */
-type Prompt = {
+export type Prompt = {
   name: string
   description?: string
   arguments?: Array<{
@@ -33,8 +35,7 @@ export default async function promptsList (request: JSONRPCRequest<PromptsListRe
     jsonrpc: '2.0',
     id: request.id,
     result: {
-      prompts: [
-      ],
+      prompts: await prompts.listPrompts(),
     }
   }
   return response

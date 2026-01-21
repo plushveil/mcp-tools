@@ -1,6 +1,6 @@
 {
 	"servers": {
-		"mcp-tools": {
+		"tools": {
 			"type": "stdio",
 			"command": "zsh",
 			"args": [
