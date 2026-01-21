@@ -30,7 +30,7 @@ export default async function generateTestResource (input: Input, ai: typeof sam
   fs.writeFileSync(outputFile, input.content, 'utf-8')
 
   return {
-    content: [{ type: 'text', text: `Resource "${uri}" will be generated` }],
+    content: [{ type: 'resource', resource: { uri, mimeType: 'text/plain', text: '' } }],
     isError: false,
   }
 }
