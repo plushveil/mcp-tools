@@ -1,13 +1,4 @@
 /**
- *
- */
-export type Workspace = {
-  pendingRequests: Record<number, (response: JSONRPCResponse) => void>
-  logLevel: 'debug' | 'info' | 'notice' | 'warning' | 'error' | 'critical' | 'alert' | 'emergency'
-  roots?: { uri: string, name: string }[]
-}
-
-/**
  * @see https://www.jsonrpc.org/specification#request_object
  */
 export type JSONRPCNotification<params = unknown> = {
@@ -43,7 +34,7 @@ export type JSONRPCResponse<result = unknown> = {
 /**
  *
  */
-export type JSONRPCHandler = (request: JSONRPCRequest, workspace: Workspace) => Promise<JSONRPCResponse | void>
+export type JSONRPCHandler = (request: JSONRPCRequest) => Promise<JSONRPCResponse | void>
 
 /**
  *

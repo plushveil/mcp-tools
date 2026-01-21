@@ -1,4 +1,3 @@
-import type { Workspace } from '../types.d.ts'
 import type { PromptMessage } from '../methods/prompts/get.ts'
 
 import ask from './ask.ts'
@@ -13,7 +12,7 @@ type SampleResponse = { model: string } & PromptMessage
  * Servers can request text or image-based interactions and optionally include context from MCP servers in their prompts.
  * @see https://modelcontextprotocol.info/specification/2024-11-05/client/sampling/
  */
-export default async function sample (workspace: Workspace, ...messages: PromptMessage[]) : Promise<SampleResponse> {
-  const response = (await ask<SampleResponse>(workspace, 'sampling/createMessage', { messages })).result!
+export default async function sample (...messages: PromptMessage[]) : Promise<SampleResponse> {
+  const response = (await ask<SampleResponse>('sampling/createMessage', { messages })).result!
   return response
 }

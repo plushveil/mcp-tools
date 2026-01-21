@@ -1,17 +1,12 @@
-import type { Workspace, JSONRPCRequest, JSONRPCResponse } from '../types.d.ts'
+import type { JSONRPCRequest, JSONRPCResponse } from '../types.d.ts'
 
-import * as url from 'node:url'
-
-import ask from '../utils/ask.ts'
+import console from '../utils/console.ts'
 
 /**
  *
  */
-export default async function initialize (request: JSONRPCRequest, workspace: Workspace) : Promise<JSONRPCResponse> {
-  let roots = (await ask<{ roots: { uri: string, name: string }[] }>(workspace, 'roots/list')).result!.roots
-  if (roots.length === 0) roots = [{ uri: url.pathToFileURL(process.cwd()).href, name: 'cwd' }]
-  workspace.roots = roots
-
+export default async function initialize (request: JSONRPCRequest) : Promise<JSONRPCResponse> {
+  console.debug('Initializing workspace')
   const response: JSONRPCResponse = {
     jsonrpc: '2.0',
     id: request.id!,

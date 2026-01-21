@@ -1,4 +1,6 @@
-import type { Workspace, JSONRPCRequest, JSONRPCResponse } from '../../types.d.ts'
+import type { JSONRPCRequest, JSONRPCResponse } from '../../types.d.ts'
+
+import * as workspace from '../../src/workspace.ts'
 
 /**
  *
@@ -12,7 +14,8 @@ type LoggingSetLevelRequest = {
  * @returns {Promise<JSONRPCResponse<{}>>}
  * @see https://modelcontextprotocol.info/specification/2024-11-05/server/prompts/#getting-a-prompt
  */
-export default async function loggingSetLevel (request: JSONRPCRequest<LoggingSetLevelRequest>, workspace: Workspace) : Promise<JSONRPCResponse<{}>> {
-  workspace.logLevel = (request.params?.level ?? 'info') as Workspace['logLevel']
+export default async function loggingSetLevel (request: JSONRPCRequest<LoggingSetLevelRequest>) : Promise<JSONRPCResponse<{}>> {
+  const logLevel = (request.params?.level ?? 'info')
+  if (logLevel !== workspace.getLogLevel()) workspace.setLogLevel(logLevel as any)
   return { jsonrpc: '2.0', id: request.id!, result: {} }
 }

@@ -1,4 +1,4 @@
-import type { JSONRPCNotification } from '../types.d.ts'
+import notify from './notify.ts'
 
 type Level = 'debug' | 'info' | 'notice' | 'warning' | 'error' | 'critical' | 'alert' | 'emergency'
 
@@ -17,14 +17,8 @@ export default {
  *
  */
 function log (level: Level, ...data: unknown[]) : void {
-  const request: JSONRPCNotification = {
-    jsonrpc: '2.0',
-    method: 'notifications/message',
-    params: {
-      level: level,
-      data: data.length === 1 ? data[0] : [...data]
-    }
-  }
-
-  console.log(JSON.stringify(request))
+  notify('notifications/message', {
+    level: level,
+    data: data.length === 1 ? data[0] : [...data]
+  })
 }
