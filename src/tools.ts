@@ -136,15 +136,13 @@ async function getAvailableTools(folder: string) : Promise<Record<string, Tool>>
     const toolPath = path.join(folder, dirent.name)
     const toolConfigPath = path.join(toolPath, 'package.json')
     if (!fs.existsSync(toolConfigPath)) {
-      watchers.push(fs.watch(toolPath, { persistent: false, recursive: false }, (eventType, filename) => {
+      watchers.push(fs.watch(toolPath, { persistent: false, recursive: false }, (_e, filename) => {
         if (filename !== 'package.json') return
         onToolFolderChange()
       }))
       continue
     } else {
-      watchers.push(fs.watch(toolConfigPath, { persistent: false, recursive: false }, (eventType, filename) => {
-        onToolFolderChange()
-      }))
+      watchers.push(fs.watch(toolConfigPath, { persistent: false, recursive: false }, () => { onToolFolderChange() }))
     }
 
     const toolConfig = JSON.parse(fs.readFileSync(toolConfigPath, 'utf-8'))
