@@ -89,6 +89,7 @@ async function getPromptCompletions (request: JSONRPCRequest<CompletionCompleteR
         return r
       }
       if (typeof response === 'string') suggestions = [response]
+      else suggestions = response
     }
   } catch (err) {
     return empty

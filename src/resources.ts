@@ -105,6 +105,7 @@ export function readResource (uri: string) : ResourceContent[] | void {
  */
 function getResourceFromFilePath (filePath: string) : Resource | null {
   const uri = url.pathToFileURL(filePath).toString()
+  if (!fs.existsSync(filePath)) return null
   const stats = fs.statSync(filePath)
   return {
     uri,
