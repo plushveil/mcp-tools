@@ -1,5 +1,7 @@
 import type { JSONRPCRequest, JSONRPCResponse } from '../../types.d.ts'
 
+import * as resources from '../../src/resources.ts'
+
 /**
  * 
  */
@@ -38,11 +40,36 @@ type BinaryContent = {
  * @see https://modelcontextprotocol.info/specification/2024-11-05/server/resources/#reading-resources
  */
 export default async function resourcesRead (request: JSONRPCRequest<ResourcesReadRequest>) : Promise<JSONRPCResponse<ResourcesReadResponse>> {
+  if (!request.params || !request.params.uri) {
+    const response: JSONRPCResponse<ResourcesReadResponse> = {
+      jsonrpc: '2.0',
+      id: request.id,
+      error: {
+        code: -32602,
+        message: 'Invalid params: "uri" is required',
+      }
+    }
+    return response
+  }
+
+  const contents = resources.readResource(request.params.uri)
+  if (!contents) {
+    const response: JSONRPCResponse<ResourcesReadResponse> = {
+      jsonrpc: '2.0',
+      id: request.id,
+      error: {
+        code: -32602,
+        message: `Resource not found: ${request.params.uri}`,
+      }
+    }
+    return response
+  }
+
   const response: JSONRPCResponse<ResourcesReadResponse> = {
     jsonrpc: '2.0',
     id: request.id,
     result: {
-      contents: [],
+      contents,
     }
   }
   return response

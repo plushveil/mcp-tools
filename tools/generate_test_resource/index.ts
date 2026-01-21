@@ -25,12 +25,11 @@ export default async function generateTestResource (input: Input, ai: typeof sam
   const outputFile = path.resolve(output, input.name)
   const uri = url.pathToFileURL(outputFile).toString()
 
-  // example
   if (!fs.existsSync(path.dirname(outputFile))) fs.mkdirSync(path.dirname(outputFile), { recursive: true })
   fs.writeFileSync(outputFile, input.content, 'utf-8')
 
   return {
-    content: [{ type: 'resource', resource: { uri, mimeType: 'text/plain', text: '' } }],
+    content: [{ type: 'resource', resource: { uri, mimeType: 'text/plain', text: fs.readFileSync(outputFile, 'utf-8') } }],
     isError: false,
   }
 }

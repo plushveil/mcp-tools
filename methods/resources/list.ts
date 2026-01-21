@@ -1,5 +1,7 @@
 import type { JSONRPCRequest, JSONRPCResponse, PaginationRequest, PaginationResponse } from '../../types.d.ts'
 
+import * as resources from '../../src/resources.ts'
+
 /**
  * 
  */
@@ -18,11 +20,11 @@ type ResourceListResponse = { resources: Resource[] } & PaginationResponse
  * mimeType: Optional MIME type
  * @see https://modelcontextprotocol.info/specification/2024-11-05/server/resources/#resource
  */
-type Resource = {
+export type Resource = {
   uri: string,
   name: string,
-  description: string,
-  mimeType: string
+  description?: string,
+  mimeType?: string
 }
 
 /**
@@ -35,8 +37,7 @@ export default async function resourcesList (request: JSONRPCRequest<ResourceLis
     jsonrpc: '2.0',
     id: request.id,
     result: {
-      resources: [
-      ],
+      resources: resources.getResources(),
     }
   }
   return response
