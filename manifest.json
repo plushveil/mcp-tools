@@ -2,7 +2,7 @@
   "manifest_version": "0.3",
   "name": "mcp-tools",
   "version": "1.0.0",
-  "description": "Applies all raw MCP Bundles (MCPB) found in the current working directories `./tools/` folder.",
+  "description": "Exposes all tools found in the current working directories `./tools/` folder.",
   "author": {
     "name": "Plushveil"
   },

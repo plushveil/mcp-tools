@@ -48,10 +48,7 @@ export function getRootDirectories(): RootDirectory[] {
 export function setRootDirectories(roots: RootDirectory[]): void {
   internalState.rootDirectories = roots
   console.info(`Root directories set to:\n - ${roots.map(root => root.uri).join('\n - ')}`)
-
   tools.onWorkspaceRootsListChanged()
-  resouces.onWorkspaceRootsListChanged()
-  prompts.onWorkspaceRootsListChanged()
 }
 
 /**

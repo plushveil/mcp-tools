@@ -3,6 +3,6 @@
 /**
  *
  */
-export async function onWorkspaceRootsListChanged () : Promise<void> {
+export async function onToolListChanged (tools: string[]) : Promise<void> {
 
 }

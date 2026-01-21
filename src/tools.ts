@@ -5,6 +5,9 @@ import * as fs from 'node:fs'
 import * as path from 'node:path'
 import * as url from 'node:url'
 
+import * as resources from './resources.ts'
+import * as prompts from './prompts.ts'
+
 import * as workspace from './workspace.ts'
 import notify from '../utils/notify.ts'
 import sample from '../utils/sampling.ts'
@@ -177,4 +180,6 @@ function updateTools (updatedTools: Record<string, Tool>) : void {
   Object.keys(tools).forEach(key => { delete tools[key] })
   Object.assign(tools, updatedTools)
   notify('notifications/tools/list_changed')
+  resources.onToolListChanged(Object.keys(tools))
+  prompts.onToolListChanged(Object.keys(tools))
 }
