@@ -6,7 +6,7 @@ import * as workspace from '../../../src/workspace.ts'
 import ask from '../../../utils/ask.ts'
 
 /**
- *
+ * This notification is received when the list of root directories has changed.
  */
 export default async function notificationsRootsListChanged (request: JSONRPCNotification) : Promise<JSONRPCResponse | void> {
   let roots = (await ask<{ roots: { uri: string, name: string }[] }>('roots/list')).result!.roots
