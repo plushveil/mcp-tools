@@ -31,6 +31,13 @@ export async function onWorkspaceRootsListChanged () : Promise<void> {
 /**
  *
  */
+export function findToolByUri (uri: string) : ToolPackageJSON {
+  return tools[uri]
+}
+
+/**
+ *
+ */
 export function listToolDescriptors () : Tool[] {
   return Object.values(tools).map(tool => ({
     name: tool.name,

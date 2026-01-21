@@ -34,3 +34,10 @@ export default async function generateTestResource (input: Input, ai: typeof sam
     isError: false,
   }
 }
+
+/**
+ *
+ */
+export async function getTextSuggestions (file: 'input' | 'test.prompt.md', key: string, input: string) : Promise<string[]> {
+  return []
+}

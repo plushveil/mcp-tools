@@ -66,6 +66,13 @@ export async function onToolListChanged (tools: string[]) : Promise<void> {
 /**
  *
  */
+export async function findPromptByName (name: string) : Promise<PromptDefinition | undefined> {
+  return prompts.find(p => p.name === name)
+}
+
+/**
+ *
+ */
 export async function listPrompts() : Promise<Prompt[]> {
   const promptDefinitions: Prompt[] = []
 
