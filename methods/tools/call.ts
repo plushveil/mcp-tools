@@ -1,15 +1,25 @@
 import type { JSONRPCRequest, JSONRPCResponse } from '../../types.d.ts'
 import type { ResourceContent } from '../resources/read.ts'
 
-/**
- *
- */
-type ToolsCallRequest = {}
+import * as tools from '../../src/tools.ts'
 
 /**
  *
  */
-type ToolsCallResponse = { content: ToolResult[], isError: boolean }
+type ToolsCallRequest = {
+  name: string,
+  arguments: Record<string, string>,
+  _meta?: {
+    progressToken: string,
+    'vscode.conversationId'?: string,
+    'vscode.requestId'?: string,
+  }
+}
+
+/**
+ *
+ */
+export type ToolsCallResponse = { content: ToolResult[], isError: boolean }
 
 /**
  * @see https://modelcontextprotocol.info/specification/2024-11-05/server/tools/#tool-result
@@ -47,14 +57,26 @@ type EmbeddedResource = {
  * @see https://modelcontextprotocol.info/specification/2024-11-05/server/tools/#listing-tools
  */
 export default async function toolsCall (request: JSONRPCRequest<ToolsCallRequest>) : Promise<JSONRPCResponse<ToolsCallResponse>> {
+  if (!request.params || !request.params.name) {
+    const response: JSONRPCResponse<ToolsCallResponse> = {
+      jsonrpc: '2.0',
+      id: request.id,
+      result: {
+        content: [{
+          type: 'text',
+          text: 'Tool name is required.'
+        }],
+        isError: true,
+      }
+    }
+    return response
+  }
+
+
   const response: JSONRPCResponse<ToolsCallResponse> = {
     jsonrpc: '2.0',
     id: request.id,
-    result: {
-      content: [
-      ],
-      isError: false,
-    }
+    result: await tools.callTool(request.params?.name || '', request.params?.arguments || {})
   }
   return response
 }

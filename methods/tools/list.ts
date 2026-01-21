@@ -1,5 +1,7 @@
 import type { JSONRPCRequest, JSONRPCResponse, PaginationRequest, PaginationResponse } from '../../types.d.ts'
 
+import * as tools from '../../src/tools.ts'
+
 /**
  *
  */
@@ -13,7 +15,7 @@ type ToolsListResponse = { tools: Tool[] } & PaginationResponse
 /**
  *
  */
-type Tool = {
+export type Tool = {
   name: string,
   description: string,
   inputSchema: {
@@ -33,8 +35,7 @@ export default async function toolsList (request: JSONRPCRequest<ToolsListReques
     jsonrpc: '2.0',
     id: request.id,
     result: {
-      tools: [
-      ],
+      tools: tools.listToolDescriptors(),
     }
   }
   return response
