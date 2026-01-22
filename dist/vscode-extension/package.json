@@ -1,0 +1,39 @@
+{
+	"name": "@plushveil/mcp-tools",
+	"displayName": "Tools",
+	"description": "Exposes your tool folders as MCP Tools.",
+	"version": "0.0.1",
+	"publisher": "plushveil",
+	"license": "MIT",
+	"repository": "https://github.com/plushveil/mcp-tools",
+	"engines": {
+    "vscode": "^1.106.1"
+  },
+	"categories": [
+		"Other"
+	],
+	"main": "index.js",
+	"contributes": {
+		"mcpServerDefinitionProviders": [
+			{
+				"id": "tools",
+				"label": "Tools"
+			}
+		]
+	},
+	"scripts": {
+    "build": "npm run build:clean && npm run build:docs && npm run build:extension && npm run build:package",
+    "build:clean": "rm -rf README.md LICENSE",
+    "build:docs": "cp ../../.github/README.md ./README.md && cp ../../.github/LICENSE ./LICENSE",
+    "build:extension": "tsc -p ./",
+		"build:package": "npm run build:package:build && npm run build:package:copy && npm run build:package:clean",
+		"build:package:build": "cd ../npm-package && npm install && npm run build && cd ../vscode-extension",
+		"build:package:copy": "mkdir -p mcp && cp -r ../npm-package/* mcp",
+		"build:package:clean": "rm -rf mcp/node_modules"
+	},
+  "devDependencies": {
+    "@types/node": "24.x",
+    "@types/vscode": "^1.106.1",
+		"typescript": "^5.9.2"
+  }
+}

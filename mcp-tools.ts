@@ -10,7 +10,7 @@ import * as readline from 'node:readline'
 import output from './utils/console.ts'
 import * as workspace from './src/workspace.ts'
 
-const __filename = url.fileURLToPath(import.meta.url)
+const __filename = fs.realpathSync(url.fileURLToPath(import.meta.url))
 const __dirname = path.dirname(__filename)
 
 const __methods = path.join(__dirname, 'methods')
@@ -23,14 +23,12 @@ for (const f of fs.readdirSync(__methods, { recursive: true }).filter(f => f.toS
 
 if (import.meta.url === url.pathToFileURL(process.argv[1]).toString()) {
   await main()
-} else {
-  throw new Error('This module does not provide any exports.')
 }
 
 /**
  *
  */
-async function main (input: NodeJS.ReadableStream = process.stdin, output: NodeJS.WritableStream = process.stdout) : Promise<readline.Interface> {
+export async function main (input: NodeJS.ReadableStream = process.stdin, output: NodeJS.WritableStream = process.stdout) : Promise<readline.Interface> {
   const rl = readline.createInterface({ input, output })
   rl.on('line', (line) => onrequest(line))
   return rl

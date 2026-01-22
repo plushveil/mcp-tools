@@ -1,0 +1,6 @@
+*
+!.gitignore
+!index.ts
+!package.json
+!tsconfig.json
+!.vscodeignore

@@ -7,8 +7,7 @@
     "tools": "./mcp-tools.ts"
   },
   "scripts": {
-    "test": "echo \"Warn: no test specified\" && exit 0",
-    "build": "tsc"
+    "test": "echo \"Warn: no test specified\" && exit 0"
   },
   "repository": {
     "type": "git",
@@ -16,14 +15,13 @@
   },
   "keywords": [],
   "author": "",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "type": "module",
   "bugs": {
     "url": "https://github.com/plushveil/mcp-tools/issues"
   },
   "homepage": "https://github.com/plushveil/mcp-tools#readme",
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.25.3"
   },
   "devDependencies": {
     "@types/node": "^25.0.9"

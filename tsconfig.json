@@ -1,7 +1,12 @@
 {
   "compilerOptions": {
     "noEmit": true,
-    "strict": true
+    "strict": true,
+    "allowImportingTsExtensions": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "target": "esnext"
   },
-  "include": ["methods/**/*.ts"]
+  "include": ["./mcp-tools.ts", "methods/**/*.ts"]
 }

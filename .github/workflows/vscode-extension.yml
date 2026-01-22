@@ -1,0 +1,70 @@
+name: CD
+
+on:
+  push:
+    branches:
+      - latest
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 'latest'
+
+    - name: Install dependencies
+      run: npm install && cd dist/npm-package && npm install
+
+    - name: Run tests
+      run: npm test
+
+    - name: Build from TypeScript
+      run: cd dist/npm-package && npm run build
+
+    - name: Create build artifacts
+      uses: actions/upload-artifact@v6
+      with:
+        name: package-files
+        path: dist/npm-package/
+
+  publish-package:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'latest'
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v7
+        with:
+          name: package-files
+          path: .
+
+      - name: Publish package
+        run: |
+          npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
+          npm publish --access public || true
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish package to GitHub Package Registry
+        run: |
+          npm config set //npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}
+          npm config set @plushveil:registry https://npm.pkg.github.com
+          npm publish --access public || true
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
