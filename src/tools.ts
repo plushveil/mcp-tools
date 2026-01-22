@@ -1,10 +1,12 @@
 import type { MetaInformation } from '../src/types.d.ts'
 import type { Tool } from '../methods/tools/list.ts'
 import type { ToolCallResponse } from '../methods/tools/call.ts'
+import type { AiOperations } from '../types.d.ts'
 
 import * as fs from 'node:fs'
 import * as path from 'node:path'
 import * as url from 'node:url'
+import * as cmd from 'node:child_process'
 
 import * as resources from './resources.ts'
 import * as prompts from './prompts.ts'
@@ -77,7 +79,8 @@ export async function callTool (name: string, input: Record<string, string>, _me
   }
 
   try {
-    const main = url.pathToFileURL(path.join(url.fileURLToPath(root), tool.main)).href
+    const rootPath = url.fileURLToPath(root)
+    const main = url.pathToFileURL(path.join(rootPath, tool.main)).href
     const toolModule = await import(main)
     if (typeof toolModule.default !== 'function') {
       return {
@@ -88,7 +91,14 @@ export async function callTool (name: string, input: Record<string, string>, _me
         isError: true,
       }
     }
+
     const progress = _meta?.progressToken ? unboundProgress.bind(null, _meta.progressToken) : () => {}
+    const nodeModulesPath = path.join(rootPath, 'node_modules')
+    if (!fs.existsSync(nodeModulesPath)) {
+      await installDependencies(rootPath, progress)
+      progress(0, `Starting to execute "${name}"...`)
+    }
+
     let result = await toolModule.default(input, { progress, notify, ask, sample })
     if (typeof result !== 'object' || !result) result = {}
     return {
@@ -199,4 +209,24 @@ function updateTools (updatedTools: Record<string, Tool>) : void {
   notify('notifications/tools/list_changed')
   resources.onToolListChanged(Object.keys(tools))
   prompts.onToolListChanged(Object.keys(tools))
+}
+
+/**
+ */
+function installDependencies (cwd: string, progress: AiOperations['progress']) : Promise<void> {
+  return new Promise((resolve, reject) => {
+    progress(0, 'Installing tool dependencies...')
+
+    const npm = cmd.spawn('npm', ['install', '--progress=true'], { cwd, stdio: ['ignore', 'pipe', 'pipe'], env: { ...process.env, FORCE_COLOR: 'true' } })
+    npm.stdout.on('data', (data : Buffer) => {
+      const output = data.toString()
+      const match = output.match(/(\d+)%/)
+      if (match) progress(parseInt(match[1], 10), `Installing tool dependencies... (${match[1]}%)`)
+    })
+
+    npm.on('close', () => {
+      progress(100, 'Tool dependencies installed.')
+      resolve()
+    })
+  })
 }

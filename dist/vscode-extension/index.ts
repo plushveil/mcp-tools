@@ -1,6 +1,8 @@
 import path from 'node:path'
 import * as vscode from 'vscode'
 
+const node = process.execPath
+
 export function activate(context: vscode.ExtensionContext) {
   const didChangeEmitter = new vscode.EventEmitter<void>()
  
@@ -9,7 +11,7 @@ export function activate(context: vscode.ExtensionContext) {
     provideMcpServerDefinitions: () => {
       const env = Object.fromEntries(Object.entries(process.env).filter(([_, v]) => v !== undefined)) as Record<string, string | number>
       const output: vscode.McpServerDefinition[] = [
-        new vscode.McpStdioServerDefinition('tools', 'node', [path.resolve('.', 'mcp', 'mcp-tools.js')], env)
+        new vscode.McpStdioServerDefinition('tools', node, [path.resolve('.', 'mcp', 'mcp-tools.js')], env)
       ]
       return output
     },
