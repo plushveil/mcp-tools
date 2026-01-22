@@ -1,5 +1,5 @@
-import path from 'node:path'
-import url from 'node:url'
+import * as path from 'node:path'
+import * as url from 'node:url'
 import * as vscode from 'vscode'
 
 const __filename = url.fileURLToPath(import.meta.url)
