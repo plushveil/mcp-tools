@@ -1,10 +1,11 @@
 {
 	"name": "mcp-tools",
-	"displayName": "Tools",
+	"displayName": "MCP Tools",
 	"description": "Exposes your tool folders as MCP Tools.",
 	"version": "0.0.1",
 	"publisher": "plushveil",
 	"license": "MIT",
+	"icon": "icon.png",
 	"repository": "https://github.com/plushveil/mcp-tools",
 	"engines": {
 		"vscode": "^1.108.1"

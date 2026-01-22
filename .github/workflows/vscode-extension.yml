@@ -54,4 +54,6 @@ jobs:
           path: .
 
       - name: Publish extension
-        run: vsce publish --pat ${{ secrets.VSCODE_TOKEN }} || true
+        run: |
+          npm install -g @vscode/vsce
+          vsce publish --pat ${{ secrets.VSCODE_TOKEN }} || true
