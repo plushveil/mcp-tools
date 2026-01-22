@@ -39,6 +39,20 @@ export type JSONRPCHandler = (request: JSONRPCRequest) => Promise<JSONRPCRespons
 /**
  *
  */
+export type MetaInformation = {
+  progressToken?: string
+  'vscode.conversationId'?: string
+  'vscode.requestId'?: string
+}
+
+/**
+ *
+ */
+export type DropFirst<F extends (...args: any[]) => any> = F extends (arg: any, ...rest: infer R) => infer Ret ? (...args: R) => Ret : never;
+
+/**
+ *
+ */
 export type PaginationRequest = {
   cursor?: string
 }
@@ -49,4 +63,3 @@ export type PaginationRequest = {
 export type PaginationResponse = {
   nextCursor?: string
 }
-

@@ -1,3 +1,4 @@
+import type { MetaInformation } from '../types.d.ts'
 import type { Tool } from '../methods/tools/list.ts'
 import type { ToolsCallResponse } from '../methods/tools/call.ts'
 
@@ -9,9 +10,12 @@ import * as resources from './resources.ts'
 import * as prompts from './prompts.ts'
 
 import * as workspace from './workspace.ts'
+
+import ask from '../utils/ask.ts'
 import notify from '../utils/notify.ts'
 import sample from '../utils/sampling.ts'
 import console from '../utils/console.ts'
+import unboundProgress from '../utils/progress.ts'
 
 type ToolPackageJSON = {
   main?: string,
@@ -49,7 +53,7 @@ export function listToolDescriptors () : Tool[] {
 /**
  *
  */
-export async function callTool (name: string, input: Record<string, string>) : Promise<ToolsCallResponse> {
+export async function callTool (name: string, input: Record<string, string>, _meta?: MetaInformation) : Promise<ToolsCallResponse> {
   const [root, tool] = Object.entries(tools).find(([key, t]) => t.name === name) ?? [null, null]
   if (!tool) {
     return {
@@ -83,7 +87,8 @@ export async function callTool (name: string, input: Record<string, string>) : P
         isError: true,
       }
     }
-    let result = await toolModule.default(input, sample)
+    const progress = _meta?.progressToken ? unboundProgress.bind(null, _meta.progressToken) : () => {}
+    let result = await toolModule.default(input, { progress, notify, ask, sample })
     if (typeof result !== 'object' || !result) result = {}
     return {
       content: Array.isArray(result.content) ? result.content : [],

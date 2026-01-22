@@ -1,4 +1,4 @@
-import type { JSONRPCRequest, JSONRPCResponse } from '../../types.d.ts'
+import type { JSONRPCRequest, JSONRPCResponse, MetaInformation } from '../../types.d.ts'
 import type { ResourceContent } from '../resources/read.ts'
 
 import * as tools from '../../src/tools.ts'
@@ -9,11 +9,7 @@ import * as tools from '../../src/tools.ts'
 type ToolsCallRequest = {
   name: string,
   arguments: Record<string, string>,
-  _meta?: {
-    progressToken: string,
-    'vscode.conversationId'?: string,
-    'vscode.requestId'?: string,
-  }
+  _meta?: MetaInformation
 }
 
 /**
@@ -76,7 +72,7 @@ export default async function toolsCall (request: JSONRPCRequest<ToolsCallReques
   const response: JSONRPCResponse<ToolsCallResponse> = {
     jsonrpc: '2.0',
     id: request.id,
-    result: await tools.callTool(request.params?.name || '', request.params?.arguments || {})
+    result: await tools.callTool(request.params.name, request.params.arguments || {}, request.params._meta)
   }
   return response
 }

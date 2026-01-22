@@ -1,5 +1,9 @@
-import type sample from '../../utils/sampling.ts'
+import type SampleType from '../../utils/sampling.ts'
+import type AskType from '../../utils/ask.ts'
+import type NotifyType from '../../utils/notify.ts'
+import type ProgressType from '../../utils/progress.ts'
 import type { ToolsCallResponse } from '../../methods/tools/call.ts'
+import type { DropFirst } from '../../types.d.ts'
 
 import * as fs from 'fs'
 import * as path from 'path'
@@ -19,14 +23,24 @@ type Input = {
 }
 
 /**
+ * Available AI operations passed to the tool.
+ */
+type AiOperations = {
+  progress: DropFirst<typeof ProgressType>
+  notify: typeof NotifyType,
+  ask: typeof AskType,
+  sample: typeof SampleType,
+}
+
+/**
  *
  */
-export default async function generateTestResource (input: Input, ai: typeof sample) : Promise<ToolsCallResponse> {
+export default async function generateTestResource (input: Input, ai: AiOperations) : Promise<ToolsCallResponse> {
   const outputFile = path.resolve(output, input.name)
   const uri = url.pathToFileURL(outputFile).toString()
 
   try {
-    const response = await ai(
+    const response = await ai.sample(
       { role: 'system', content: { type: 'text', text: 'You are a helpful assistant that generates test resource files based on user input.' } },
       { role: 'user', content: { type: 'text', text: `Get random content for a test resource. Like a poem, etc.` } },
     )
@@ -37,6 +51,11 @@ export default async function generateTestResource (input: Input, ai: typeof sam
 
   if (!fs.existsSync(path.dirname(outputFile))) fs.mkdirSync(path.dirname(outputFile), { recursive: true })
   fs.writeFileSync(outputFile, input.content, 'utf-8')
+
+  for (let i = 0; i <= 100; i += 10) {
+    ai.progress(i, `Generating resource "${input.name}": ${i}% complete`, 100)
+    await new Promise(resolve => setTimeout(resolve, 1000))
+  }
 
   return {
     content: [{ type: 'resource', resource: { uri, mimeType: 'text/plain', text: fs.readFileSync(outputFile, 'utf-8') } }],

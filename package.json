@@ -4,7 +4,7 @@
   "description": "",
   "main": "mcp-tools.ts",
   "bin": {
-    "mcp-tools": "./mcp-tools.ts"
+    "tools": "./mcp-tools.ts"
   },
   "scripts": {},
   "repository": {
