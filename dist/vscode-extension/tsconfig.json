@@ -10,7 +10,7 @@
 		"strict": true,
 		"rootDir": "."
 	},
-	"exclude": [
-		"node_modules",
+	"files": [
+		"index.ts"
 	]
 }

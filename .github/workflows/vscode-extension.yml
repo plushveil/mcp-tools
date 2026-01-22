@@ -21,26 +21,25 @@ jobs:
         node-version: 'latest'
 
     - name: Install dependencies
-      run: npm install && cd dist/npm-package && npm install
+      run: npm install && cd dist/vscode-extension && npm install
 
-    - name: Run tests
-      run: npm test
+    - name: Build extension
+      run: cd dist/vscode-extension && npm run build
 
-    - name: Build from TypeScript
-      run: cd dist/npm-package && npm run build
+    - name: Package extension
+      run: cd dist/vscode-extension && npm run package
 
     - name: Create build artifacts
       uses: actions/upload-artifact@v6
       with:
-        name: package-files
-        path: dist/npm-package/
+        name: extension-files
+        path: dist/vscode-extension/
 
-  publish-package:
+  publish-extension:
     needs: build
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: write
 
     steps:
       - name: Set up Node.js
@@ -51,20 +50,8 @@ jobs:
       - name: Download build artifacts
         uses: actions/download-artifact@v7
         with:
-          name: package-files
+          name: extension-files
           path: .
 
-      - name: Publish package
-        run: |
-          npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
-          npm publish --access public || true
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Publish package to GitHub Package Registry
-        run: |
-          npm config set //npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}
-          npm config set @plushveil:registry https://npm.pkg.github.com
-          npm publish --access public || true
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish extension
+        run: vsce publish --pat ${{ secrets.VSCODE_TOKEN }} || true
