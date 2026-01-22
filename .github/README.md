@@ -7,10 +7,12 @@ https://marketplace.visualstudio.com/items?itemName=plushveil.mcp-tools
 
 ```json
 {
-  "tools": {
-    "type": "stdio",
-    "command": "npx",
-    "args": ["--yes", "@plushveil/mcp-tools"],
+	"servers": {
+    "tools": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["--yes", "@plushveil/mcp-tools"],
+    }
   }
 }
 ```
