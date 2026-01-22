@@ -7,7 +7,7 @@
 	"license": "MIT",
 	"repository": "https://github.com/plushveil/mcp-tools",
 	"engines": {
-		"vscode": "^1.106.1"
+		"vscode": "^1.108.1"
 	},
 	"categories": [
 		"Other"
@@ -36,9 +36,9 @@
 		"package": "vsce package"
 	},
 	"devDependencies": {
-		"@types/node": "24.x",
-		"@types/vscode": "^1.106.1",
+		"@types/node": "25.x",
+		"@types/vscode": "^1.108.1",
 		"@vscode/vsce": "^3.7.1",
-		"typescript": "^5.9.2"
+		"typescript": "^5.9.3"
 	}
 }
