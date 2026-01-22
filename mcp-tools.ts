@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import type { JSONRPCRequest, JSONRPCResponse, JSONRPCHandler } from './types.d.ts'
+import type { JSONRPCRequest, JSONRPCResponse, JSONRPCHandler } from './src/types.d.ts'
 
 import * as path from 'node:path'
 import * as url from 'node:url'

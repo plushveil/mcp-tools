@@ -1,4 +1,4 @@
-import type { JSONRPCRequest, JSONRPCResponse, MetaInformation } from '../../types.d.ts'
+import type { JSONRPCRequest, JSONRPCResponse, MetaInformation } from '../../src/types.d.ts'
 import type { ResourceContent } from '../resources/read.ts'
 
 import * as tools from '../../src/tools.ts'
@@ -15,7 +15,7 @@ type ToolsCallRequest = {
 /**
  *
  */
-export type ToolsCallResponse = { content: ToolResult[], isError: boolean }
+export type ToolCallResponse = { content: ToolResult[], isError: boolean }
 
 /**
  * @see https://modelcontextprotocol.info/specification/2024-11-05/server/tools/#tool-result
@@ -49,12 +49,12 @@ type EmbeddedResource = {
 
 /**
  * To invoke a tool, clients send a tools/call request:
- * @returns {Promise<JSONRPCResponse<ToolsCallResponse>>} A list of content pieces resulting from the tool invocation
+ * @returns {Promise<JSONRPCResponse<ToolCallResponse>>} A list of content pieces resulting from the tool invocation
  * @see https://modelcontextprotocol.info/specification/2024-11-05/server/tools/#listing-tools
  */
-export default async function toolsCall (request: JSONRPCRequest<ToolsCallRequest>) : Promise<JSONRPCResponse<ToolsCallResponse>> {
+export default async function toolsCall (request: JSONRPCRequest<ToolsCallRequest>) : Promise<JSONRPCResponse<ToolCallResponse>> {
   if (!request.params || !request.params.name) {
-    const response: JSONRPCResponse<ToolsCallResponse> = {
+    const response: JSONRPCResponse<ToolCallResponse> = {
       jsonrpc: '2.0',
       id: request.id,
       result: {
@@ -69,7 +69,7 @@ export default async function toolsCall (request: JSONRPCRequest<ToolsCallReques
   }
 
 
-  const response: JSONRPCResponse<ToolsCallResponse> = {
+  const response: JSONRPCResponse<ToolCallResponse> = {
     jsonrpc: '2.0',
     id: request.id,
     result: await tools.callTool(request.params.name, request.params.arguments || {}, request.params._meta)

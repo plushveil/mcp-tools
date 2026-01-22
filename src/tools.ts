@@ -1,6 +1,6 @@
-import type { MetaInformation } from '../types.d.ts'
+import type { MetaInformation } from '../src/types.d.ts'
 import type { Tool } from '../methods/tools/list.ts'
-import type { ToolsCallResponse } from '../methods/tools/call.ts'
+import type { ToolCallResponse } from '../methods/tools/call.ts'
 
 import * as fs from 'node:fs'
 import * as path from 'node:path'
@@ -54,7 +54,7 @@ export function listToolDescriptors () : Tool[] {
 /**
  *
  */
-export async function callTool (name: string, input: Record<string, string>, _meta?: MetaInformation) : Promise<ToolsCallResponse> {
+export async function callTool (name: string, input: Record<string, string>, _meta?: MetaInformation) : Promise<ToolCallResponse> {
   const [root, tool] = Object.entries(tools).find(([key, t]) => t.name === name) ?? [null, null]
   if (!tool) {
     return {

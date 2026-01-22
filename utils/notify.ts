@@ -1,4 +1,4 @@
-import type { JSONRPCNotification } from '../types.d.ts'
+import type { JSONRPCNotification } from '../src/types.d.ts'
 
 import * as workspace from '../src/workspace.ts'
 

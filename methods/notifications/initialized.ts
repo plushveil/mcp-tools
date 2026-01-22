@@ -1,4 +1,4 @@
-import type { JSONRPCNotification, JSONRPCResponse } from '../../types.d.ts'
+import type { JSONRPCNotification, JSONRPCResponse } from '../../src/types.d.ts'
 
 import * as url from 'node:url'
 import ask from '../../utils/ask.ts'

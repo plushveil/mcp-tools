@@ -1,4 +1,4 @@
-import type { JSONRPCResponse } from '../types.d.ts'
+import type { JSONRPCResponse } from '../src/types.d.ts'
 
 import * as process from 'node:process'
 

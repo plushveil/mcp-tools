@@ -1,9 +1,4 @@
-import type SampleType from '../../utils/sampling.ts'
-import type AskType from '../../utils/ask.ts'
-import type NotifyType from '../../utils/notify.ts'
-import type ProgressType from '../../utils/progress.ts'
-import type { ToolsCallResponse } from '../../methods/tools/call.ts'
-import type { DropFirst } from '../../types.d.ts'
+import type { GenericInput, AiOperations, ToolCallResponse } from '../../types.d.ts'
 
 import * as fs from 'fs'
 import * as path from 'path'
@@ -17,25 +12,12 @@ const output = path.resolve(__dirname, 'output')
 /**
  * The input as defined in the package.json "inputSchema" field.
  */
-type Input = {
-  name: string,
-  content: string,
-}
-
-/**
- * Available AI operations passed to the tool.
- */
-type AiOperations = {
-  progress: DropFirst<typeof ProgressType>
-  notify: typeof NotifyType,
-  ask: typeof AskType,
-  sample: typeof SampleType,
-}
+type Input = GenericInput<{ name: string, content: string, }>
 
 /**
  *
  */
-export default async function generateTestResource (input: Input, ai: AiOperations) : Promise<ToolsCallResponse> {
+export default async function generateTestResource (input: Input, ai: AiOperations) : Promise<ToolCallResponse> {
   const outputFile = path.resolve(output, input.name)
   const uri = url.pathToFileURL(outputFile).toString()
 

@@ -1,4 +1,4 @@
-import type { JSONRPCRequest, JSONRPCResponse, PaginationRequest, PaginationResponse } from '../../types.d.ts'
+import type { JSONRPCRequest, JSONRPCResponse, PaginationRequest, PaginationResponse } from '../../src/types.d.ts'
 
 import * as tools from '../../src/tools.ts'
 

@@ -1,4 +1,4 @@
-import type { JSONRPCRequest, JSONRPCResponse } from '../../types.d.ts'
+import type { JSONRPCRequest, JSONRPCResponse } from '../../src/types.d.ts'
 
 import * as resources from '../../src/resources.ts'
 
