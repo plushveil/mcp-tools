@@ -2,7 +2,7 @@
 	"name": "mcp-tools",
 	"displayName": "MCP Tools",
 	"description": "Exposes your tool folders as MCP Tools.",
-	"version": "0.0.7",
+	"version": "0.0.8",
 	"publisher": "plushveil",
 	"license": "MIT",
 	"icon": "icon.png",
@@ -15,7 +15,8 @@
 	],
 	"main": "index.js",
 	"activationEvents": [
-    "workspaceContains:tools/**"
+    "workspaceContains:tools/**/*.json",
+    "workspaceContains:tools/**/*.md"
   ],
 	"contributes": {
 		"mcpServerDefinitionProviders": [

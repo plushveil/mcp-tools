@@ -1,14 +1,12 @@
 import * as path from 'node:path'
-import * as url from 'node:url'
 import * as vscode from 'vscode'
 
-const __filename = url.fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-const node = process.execPath
-
 export function activate(context: vscode.ExtensionContext) {
-  const didChangeEmitter = new vscode.EventEmitter<void>()
- 
+  if (!__dirname) throw new Error('__dirname is undefined')
+  const node = process.execPath
+  if (!node) throw new Error('process.execPath is undefined')
+
+  const didChangeEmitter = new vscode.EventEmitter<void>() 
   context.subscriptions.push(vscode.lm.registerMcpServerDefinitionProvider('tools', {
     onDidChangeMcpServerDefinitions: didChangeEmitter.event,
     provideMcpServerDefinitions: () => {
