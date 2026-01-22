@@ -1,6 +1,9 @@
 import path from 'node:path'
+import url from 'node:url'
 import * as vscode from 'vscode'
 
+const __filename = url.fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 const node = process.execPath
 
 export function activate(context: vscode.ExtensionContext) {
@@ -11,7 +14,7 @@ export function activate(context: vscode.ExtensionContext) {
     provideMcpServerDefinitions: () => {
       const env = Object.fromEntries(Object.entries(process.env).filter(([_, v]) => v !== undefined)) as Record<string, string | number>
       const output: vscode.McpServerDefinition[] = [
-        new vscode.McpStdioServerDefinition('tools', node, [path.resolve('.', 'mcp', 'mcp-tools.js')], env)
+        new vscode.McpStdioServerDefinition('tools', node, [path.resolve(__dirname, 'mcp', 'mcp-tools.js')], env)
       ]
       return output
     },
