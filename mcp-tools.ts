@@ -23,12 +23,14 @@ for (const f of fs.readdirSync(__methods, { recursive: true }).filter(f => f.toS
 
 if (import.meta.url === url.pathToFileURL(process.argv[1]).toString()) {
   await main()
+} else {
+  throw new Error('This module does not provide any exports.')
 }
 
 /**
  *
  */
-export async function main (input: NodeJS.ReadableStream = process.stdin, output: NodeJS.WritableStream = process.stdout) : Promise<readline.Interface> {
+async function main (input: NodeJS.ReadableStream = process.stdin, output: NodeJS.WritableStream = process.stdout) : Promise<readline.Interface> {
   const rl = readline.createInterface({ input, output })
   rl.on('line', (line) => onrequest(line))
   return rl
@@ -71,6 +73,6 @@ async function onrequest (line: string) : Promise<JSONRPCResponse | void> {
  *
  */
 function respond (response: JSONRPCResponse) : JSONRPCResponse {
-  console.log(JSON.stringify(response))
+  workspace.output(JSON.stringify(response))
   return response
 }

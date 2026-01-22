@@ -1,5 +1,7 @@
 import type { JSONRPCResponse } from '../types.d.ts'
 
+import * as process from 'node:process'
+
 import console from '../utils/console.ts'
 import * as tools from './tools.ts'
 
@@ -82,4 +84,11 @@ export function getResponseForId (id: string | number): ResponseCallback | undef
     }
   }
   return undefined
+}
+
+/**
+ * Writes to stdout.
+ */
+export function output (buffer: string | Uint8Array): void {
+  process.stdout.write(buffer.toString() + '\n')
 }

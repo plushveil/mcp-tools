@@ -8,6 +8,7 @@ import * as url from 'node:url'
 
 import * as resources from './resources.ts'
 import * as prompts from './prompts.ts'
+import * as importModule from './import.ts'
 
 import * as workspace from './workspace.ts'
 
@@ -191,6 +192,10 @@ function updateTools (updatedTools: Record<string, Tool>) : void {
 
   Object.keys(tools).forEach(key => { delete tools[key] })
   Object.assign(tools, updatedTools)
+  importModule.onToolListChanged(Object.entries(tools).map(([root, { main }]) => {
+    return url.pathToFileURL(path.join(url.fileURLToPath(root), main ?? ''))
+  }))
+
   notify('notifications/tools/list_changed')
   resources.onToolListChanged(Object.keys(tools))
   prompts.onToolListChanged(Object.keys(tools))

@@ -39,6 +39,9 @@ export default async function generateTestResource (input: Input, ai: AiOperatio
   const outputFile = path.resolve(output, input.name)
   const uri = url.pathToFileURL(outputFile).toString()
 
+  // output is written to vscode OUTPUT tab
+  console.info('Starting to generate test resource')
+
   try {
     const response = await ai.sample(
       { role: 'system', content: { type: 'text', text: 'You are a helpful assistant that generates test resource files based on user input.' } },

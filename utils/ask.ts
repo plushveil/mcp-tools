@@ -18,6 +18,6 @@ export default function ask <Result> (method: string, params?: Record<string, un
       }
     })
     const request: JSONRPCRequest = { jsonrpc: '2.0', method, id, params }
-    console.log(JSON.stringify(request))
+    workspace.output(JSON.stringify(request))
   })
 }

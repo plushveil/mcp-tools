@@ -11,6 +11,9 @@ export default {
   critical: log.bind(null, 'critical'),   // Critical conditions
   alert: log.bind(null, 'alert'),         // Action must be taken immediately
   emergency: log.bind(null, 'emergency'), // System is unusable
+
+  log: log.bind(null, 'info'),            // General informational messages
+  warn: log.bind(null, 'warning'),        // Warning conditions
 }
 
 /**
