@@ -30,7 +30,7 @@ const prompts: PromptDefinition[] = []
 export async function onToolListChanged (tools: string[]) : Promise<void> {
   const newPrompts: PromptDefinition[] = []
   for (const tool of tools.map(t => url.fileURLToPath(t))) {
-    for (const file of fs.readdirSync(tool, { recursive: true })) {
+    for (const file of fs.readdirSync(tool, { recursive: false })) {
       if (file.toString().endsWith('.prompt.md')) {
         try {
           newPrompts.push(await parsePromptFile(tool, path.join(tool, file.toString())))
@@ -76,7 +76,7 @@ export async function onToolListChanged (tools: string[]) : Promise<void> {
 
   for (const tool of tools.map(t => url.fileURLToPath(t))) {
     if (fs.existsSync(tool) === false) continue
-    watchers.push(fs.watch(tool, { recursive: true, persistent: false }, async (_e, filename) => {
+    watchers.push(fs.watch(tool, { recursive: false, persistent: false }, async (_e, filename) => {
       if (filename?.toLowerCase().endsWith('.prompt.md')) {
         const filePath = path.join(tool, filename)
         if (prompts.find(p => p.file === filePath)) return
@@ -119,7 +119,7 @@ export async function getPrompt(name: string, params: Record<string, string>) : 
 
   let content = prompt.content
   for (const [key, value] of Object.entries(params)) {
-    const regex = new RegExp(`\\$\\{input:${key}(:[^}]+)?\\}`, 'g')
+    const regex = new RegExp(`\\$\\{input:${key}(:[^:}]+)?\\}`, 'g')
     content = content.replaceAll(regex, value)
   }
 

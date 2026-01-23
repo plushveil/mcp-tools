@@ -125,6 +125,18 @@ export async function getTextSuggestions(
 
 
 ## Prompt files
+
+Use the following template for prompt files:
+
+```md
+---
+agent: agent
+description: Short description of what this prompt does.
+tools: [execute, read, edit, search, web, agent, todo]
+---
+Prompt content goes here, using `${input:key:description}` placeholders as needed.
+```
+
 - Generate as many `.prompt.md` files as you deem useful for maximizing the tool's effectiveness
 - be valid .prompt.md files with proper YAML front matter
   - include the agent (`agent`, `ask`, `edit`, `Plan`)
@@ -139,6 +151,7 @@ export async function getTextSuggestions(
 - Do not call tools or MCP APIs
 - You are generating source files only
 - Prefer sensible defaults over asking questions
+- Create atleast 1 prompt file that explicitly requests calling the tool itself
 
 
 ## Inputs
@@ -150,6 +163,12 @@ ${input:description:What the tool does}
 
 Arguments for the tool, (convert from human readable to input schema):
 ${input:args:Arguments for the tool, used to build the input schema}
+
+
+# Resources
+
+Read further infos at https://github.com/plushveil/mcp-tools/blob/latest/.github/README.md
+
 
 
 ## Output
