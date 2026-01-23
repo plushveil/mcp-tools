@@ -130,7 +130,7 @@ export async function getTextSuggestions(
   - include the agent (`agent`, `ask`, `edit`, `Plan`)
   - include a short description (single line) 
 - Prompt files should:
-  - use `${input:input_name:input_description}` placeholders
+  - use `${input}` placeholders with :name and :description hints.
   - be referenced in `PromptFile` if text suggestions are implemented
 
 
