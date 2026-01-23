@@ -1,9 +1,15 @@
 import * as path from 'node:path'
+import * as cmd from 'node:child_process'
 import * as vscode from 'vscode'
 
 export function activate(context: vscode.ExtensionContext) {
   if (!__dirname) throw new Error('__dirname is undefined')
-  const node = process.execPath
+  let node
+  try {
+    node = cmd.execSync(`node -p "process.execPath"`, { encoding: "utf8" }).trim()
+  } catch {
+    node = process.execPath
+  }
   if (!node) throw new Error('process.execPath is undefined')
 
   const didChangeEmitter = new vscode.EventEmitter<void>()
