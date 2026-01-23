@@ -28,7 +28,6 @@ import methodTools from './methods/tools/list.ts'
 const __filename = fs.realpathSync(url.fileURLToPath(import.meta.url))
 const __dirname = path.dirname(__filename)
 
-const __methods = path.join(__dirname, 'methods')
 const methods: Record<string, JSONRPCHandler> = {
   'initialize': methodInitialize,
   'completion/complete': methodCompletionComplete,
@@ -46,10 +45,13 @@ const methods: Record<string, JSONRPCHandler> = {
 }
 
 // for dynamic method loading, may not work in packaged environments
-for (const f of fs.readdirSync(__methods, { recursive: true }).filter(f => f.toString().endsWith('.ts'))) {
-  const name = f.toString().slice(0, -3)
-  const method = (await import(url.pathToFileURL(path.join(__methods, f.toString())).toString())).default
-  if (typeof method === 'function') methods[name] = method
+const __methods = path.join(__dirname, 'methods')
+if (fs.existsSync(__methods)) {
+  for (const f of fs.readdirSync(__methods, { recursive: true }).filter(f => f.toString().endsWith('.ts'))) {
+    const name = f.toString().slice(0, -3)
+    const method = (await import(url.pathToFileURL(path.join(__methods, f.toString())).toString())).default
+    if (typeof method === 'function') methods[name] = method
+  }
 }
 
 if (fs.realpathSync(url.fileURLToPath(import.meta.url)) === fs.realpathSync(process.argv[1])) {
