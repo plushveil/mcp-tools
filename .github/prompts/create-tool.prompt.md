@@ -128,9 +128,9 @@ export async function getTextSuggestions(
 - Generate as many `.prompt.md` files as you deem useful for maximizing the tool's effectiveness
 - be valid .prompt.md files with proper YAML front matter
   - include the agent (`agent`, `ask`, `edit`, `Plan`)
-  - include a description
+  - include a short description (single line) 
 - Prompt files should:
-  - use `${input:...}` placeholders
+  - use `${input:input_name:input_description}` placeholders
   - be referenced in `PromptFile` if text suggestions are implemented
 
 

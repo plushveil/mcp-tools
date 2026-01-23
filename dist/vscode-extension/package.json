@@ -2,7 +2,7 @@
 	"name": "mcp-tools",
 	"displayName": "MCP Tools",
 	"description": "Exposes your tool folders as MCP Tools.",
-	"version": "0.0.19",
+	"version": "0.0.20",
 	"publisher": "plushveil",
 	"license": "MIT",
 	"icon": "icon.png",
