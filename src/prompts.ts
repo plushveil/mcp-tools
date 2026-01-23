@@ -32,7 +32,9 @@ export async function onToolListChanged (tools: string[]) : Promise<void> {
   for (const tool of tools.map(t => url.fileURLToPath(t))) {
     for (const file of fs.readdirSync(tool, { recursive: true })) {
       if (file.toString().endsWith('.prompt.md')) {
-        newPrompts.push(await parsePromptFile(tool, path.join(tool, file.toString())))
+        try {
+          newPrompts.push(await parsePromptFile(tool, path.join(tool, file.toString())))
+        } catch {}
       }
     }
   }
@@ -145,39 +147,41 @@ async function parsePromptFile(tool: string, file: string) : Promise<PromptDefin
 
   let isHead = 1
   const content = []
-  for await (const line of rl) {
-    if (isHead && line.trim().match(/^--+$/)) {
-      isHead++
-      if (isHead > 2) isHead = 0
-      continue
-    }
-
-    if (isHead) {
-      const lcline = line.toLowerCase()
-      if (prompt.name === defaultName && lcline.startsWith('name:')) {
-        prompt.name = `${path.basename(tool)} ${line.slice('name:'.length).trim().replace(/^['"]|['"]$/g, '')}`
+  try {
+    for await (const line of rl) {
+      if (isHead && line.trim().match(/^--+$/)) {
+        isHead++
+        if (isHead > 2) isHead = 0
+        continue
       }
-      if (!prompt.description && lcline.startsWith('description:')) {
-        prompt.description = line.slice('description:'.length).trim().replace(/^['"]|['"]$/g, '')
-      }
-      continue
-    }
 
-    if (line.includes('${input:')) {
-      const regex = /\$\{input:([a-zA-Z0-9_-]+)(:([^}]+))?\}/g
-      for (const match of line.matchAll(regex)) {
-        if (!prompt.arguments) prompt.arguments = []
-        prompt.arguments = prompt.arguments || []
-        prompt.arguments.push({
-          name: match[1],
-          description: match[3].trim(),
-          required: true
-        })
+      if (isHead) {
+        const lcline = line.toLowerCase()
+        if (prompt.name === defaultName && lcline.startsWith('name:')) {
+          prompt.name = `${path.basename(tool)} ${line.slice('name:'.length).trim().replace(/^['"]|['"]$/g, '')}`
+        }
+        if (!prompt.description && lcline.startsWith('description:')) {
+          prompt.description = line.slice('description:'.length).trim().replace(/^['"]|['"]$/g, '')
+        }
+        continue
       }
-    }
 
-    content.push(line)
-  }
+      if (line.includes('${input:')) {
+        const regex = /\$\{input:([a-zA-Z0-9_-]+):([^}]+)?\}/g
+        for (const match of line.matchAll(regex)) {
+          if (!prompt.arguments) prompt.arguments = []
+          prompt.arguments = prompt.arguments || []
+          prompt.arguments.push({
+            name: match[1],
+            description: match[2]?.trim() || '',
+            required: true
+          })
+        }
+      }
+
+      content.push(line)
+    }
+  } catch {}
   prompt.content = content.join('\n').trim()
 
   return prompt as PromptDefinition
