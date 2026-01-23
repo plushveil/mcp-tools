@@ -39,8 +39,18 @@ export async function onToolListChanged (tools: string[]) : Promise<void> {
 
   if (newPrompts.length === 0) {
     const root = path.join(__dirname, '..')
-    const promptFile = path.join(root, '.github', 'prompts', 'create-tool.prompt.md')
-    newPrompts.push(await parsePromptFile(root, promptFile))
+    const promptFiles = [
+      path.join(root, '.github', 'prompts', 'create-tool.prompt.md'),
+      path.resolve('..', 'create-tool.prompt.md'),
+      path.resolve('mcp', 'create-tool.prompt.md'),
+      path.resolve('create-tool.prompt.md')
+    ]
+    for (const promptFile of promptFiles) {
+      if (fs.existsSync(promptFile)) {
+        newPrompts.push(await parsePromptFile(root, promptFile))
+        break
+      }
+    }
   }
 
   if (newPrompts.map(p => p.name).sort().join(',') !== prompts.map(p => p.name).sort().join(',')) {
