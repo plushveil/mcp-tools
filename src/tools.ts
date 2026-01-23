@@ -198,7 +198,10 @@ function updateTools (updatedTools: Record<string, Tool>) : void {
       if (changed) break
     }
   }
-  if (changed === false) return
+  if (changed === false) {
+    if (Object.keys(updatedTools).length === 0) prompts.onToolListChanged(Object.keys(tools))
+    return
+  }
 
   Object.keys(tools).forEach(key => { delete tools[key] })
   Object.assign(tools, updatedTools)

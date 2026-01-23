@@ -14,10 +14,7 @@ const resources: Record<string, Resource> = {}
  *
  */
 export async function onToolListChanged (tools: string[]) : Promise<void> {
-  while (watchers.length > 0) {
-    const watcher = watchers.pop()
-    if (watcher) watcher.close()
-  }
+  while (watchers.length > 0) watchers.pop()?.close()
 
   const updatedResources: Record<string, Resource> = {}
   for (const tool of tools) {

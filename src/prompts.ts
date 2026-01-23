@@ -8,6 +8,9 @@ import * as readline from 'readline'
 
 import notify from '../utils/notify.ts'
 
+const __filename = url.fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
 type PromptDefinition = {
   file: string,
   tool: string,
@@ -34,9 +37,15 @@ export async function onToolListChanged (tools: string[]) : Promise<void> {
     }
   }
 
+  if (newPrompts.length === 0) {
+    const root = path.join(__dirname, '..')
+    const promptFile = path.join(root, '.github', 'prompts', 'create-tool.prompt.md')
+    newPrompts.push(await parsePromptFile(root, promptFile))
+  }
+
   if (newPrompts.map(p => p.name).sort().join(',') !== prompts.map(p => p.name).sort().join(',')) {
-    while (prompts.length) { prompts.pop() }
-    while (watchers.length) { watchers.pop() }
+    while (prompts.length) prompts.pop()
+    while (watchers.length) watchers.pop()?.close()
     for (const prompt of newPrompts) {
       prompts.push(prompt)
       watchers.push(fs.watch(prompt.file, { persistent: false, recursive: false }, async () => {

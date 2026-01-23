@@ -52,7 +52,7 @@ async function onrequest (line: string) : Promise<JSONRPCResponse | void> {
       output.debug`Ignoring notification for unhandled method: "${request.method}"`
       return
     }
-    const response = { jsonrpc: '2.0', id: request.id, error: { code: -32601, message: 'Method not found' } } as JSONRPCResponse
+    const response = { jsonrpc: '2.0', id: request.id, error: { code: -32601, message: `Method "${request.method}" not found` } } as JSONRPCResponse
     return respond(response)
   }
 

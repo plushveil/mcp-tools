@@ -2,7 +2,7 @@
 	"name": "mcp-tools",
 	"displayName": "MCP Tools",
 	"description": "Exposes your tool folders as MCP Tools.",
-	"version": "0.0.8",
+	"version": "0.0.9",
 	"publisher": "plushveil",
 	"license": "MIT",
 	"icon": "icon.png",
@@ -15,6 +15,7 @@
 	],
 	"main": "index.js",
 	"activationEvents": [
+		"onChatParticipant:tools",
     "workspaceContains:tools/**/*.json",
     "workspaceContains:tools/**/*.md"
   ],
@@ -24,7 +25,16 @@
 				"id": "tools",
 				"label": "Tools"
 			}
-		]
+		],
+		"chat": {
+			"participants": [
+				{
+					"id": "tools",
+					"label": "Tools",
+					"kind": "remote"
+				}
+			]
+		}
 	},
 	"scripts": {
 		"build": "npm run build:clean && npm run build:docs && npm run build:extension && npm run build:package",
