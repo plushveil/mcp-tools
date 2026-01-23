@@ -37,6 +37,9 @@ Create a `package.json` based on the following template:
       }
     },
     "required": ["arg1"]
+  },
+  "devDependencies": {
+    "@plushveil/mcp-tools": "latest"
   }
 }
 ```
@@ -52,7 +55,7 @@ Create a `package.json` based on the following template:
 Create an index.ts based on the following template:
 
 ```ts
-import type { GenericInput, AiOperations, ToolCallResponse } from '@plushveil/mcp-types'
+import type { GenericInput, AiOperations, ToolCallResponse } from '@plushveil/mcp-tools'
 
 /**
  * The input type for this tool.
