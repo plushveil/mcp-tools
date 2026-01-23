@@ -1,9 +1,9 @@
 {
   "name": "@plushveil/mcp-tools",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "main": "mcp-tools.js",
   "bin": {
-    "tools": "mcp-tools.js"
+    "tools": "tools.js"
   },
   "type": "module",
   "types": "mcp-tools.d.ts",
@@ -11,6 +11,7 @@
     "build": "npm run build:clean && npm run build:package && npm run build:types && npm run build:docs",
     "build:clean": "rm -rf mcp-tools.js mcp-tools.d.ts methods src utils README.md LICENSE",
     "build:package": "cd ../.. && esbuild mcp-tools.ts src/*.ts utils/*.ts methods/*.ts methods/**/*.ts --bundle --platform=node --splitting --format=esm --outdir=dist/npm-package",
+    "build:bin": "cd ../.. && esbuild mcp-tools.ts --bundle --platform=node --format=esm --outfile=dist/npm-package/tools.js",
     "build:types": "dts-bundle-generator --export-referenced-types false -o types.d.ts ../../types.d.ts",
     "build:docs": "cp ../../.github/README.md ./README.md && cp ../../.github/LICENSE ./LICENSE && cp ../../.github/prompts/create-tool.prompt.md ./create-tool.prompt.md"
   },

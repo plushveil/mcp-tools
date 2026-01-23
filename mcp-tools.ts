@@ -52,7 +52,7 @@ for (const f of fs.readdirSync(__methods, { recursive: true }).filter(f => f.toS
   if (typeof method === 'function') methods[name] = method
 }
 
-if (import.meta.url === url.pathToFileURL(process.argv[1]).toString()) {
+if (fs.realpathSync(url.fileURLToPath(import.meta.url)) === fs.realpathSync(process.argv[1])) {
   await main()
 }
 
@@ -69,32 +69,37 @@ export async function main (input: NodeJS.ReadableStream = process.stdin, output
  *
  */
 async function onrequest (line: string) : Promise<JSONRPCResponse | void> {
-  const request = JSON.parse(line) as JSONRPCRequest
+  try {
+    const request = JSON.parse(line) as JSONRPCRequest
 
-  const id = request.id
-  if (id && workspace.getResponseForId(id!)) {
-    const handler = workspace.getResponseForId(id)!
-    handler(request as JSONRPCResponse)
-    return
-  }
-
-  if (!(typeof request.method === 'string' && request.method in methods)) {
-    if (!request.id || request.method.startsWith('notifications/')) {
-      output.debug`Ignoring notification for unhandled method: "${request.method}"`
+    const id = request.id
+    if (id && workspace.getResponseForId(id!)) {
+      const handler = workspace.getResponseForId(id)!
+      handler(request as JSONRPCResponse)
       return
     }
-    const response = { jsonrpc: '2.0', id: request.id, error: { code: -32601, message: `Method "${request.method}" not found` } } as JSONRPCResponse
-    return respond(response)
-  }
 
-  try {
-    const method = methods[request.method]
-    const response = await method(request)
-    if (!response) return
-    return respond(response)
+    if (!(typeof request.method === 'string' && request.method in methods)) {
+      if (!request.id || request.method.startsWith('notifications/')) {
+        output.debug`Ignoring notification for unhandled method: "${request.method}"`
+        return
+      }
+      const response = { jsonrpc: '2.0', id: request.id, error: { code: -32601, message: `Method "${request.method}" not found` } } as JSONRPCResponse
+      return respond(response)
+    }
+
+    try {
+      const method = methods[request.method]
+      const response = await method(request)
+      if (!response) return
+      return respond(response)
+    } catch (err) {
+      const response = { jsonrpc: '2.0', id: request.id, error: { code: -32000, message: (err as Error).message } } as JSONRPCResponse
+      return respond(response)
+    }
   } catch (err) {
-    const response = { jsonrpc: '2.0', id: request.id, error: { code: -32000, message: (err as Error).message } } as JSONRPCResponse
-    return respond(response)
+    const e = err as Error
+    output.error(e.stack || e.toString())
   }
 }
 
