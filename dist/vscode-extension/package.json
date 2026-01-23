@@ -2,7 +2,7 @@
 	"name": "mcp-tools",
 	"displayName": "MCP Tools",
 	"description": "Exposes your tool folders as MCP Tools.",
-	"version": "0.0.12",
+	"version": "0.0.13",
 	"publisher": "plushveil",
 	"license": "MIT",
 	"icon": "icon.png",
@@ -15,23 +15,25 @@
 	],
 	"main": "index.js",
 	"activationEvents": [
-		"onChatParticipant:tools",
+		"onStartupFinished",
+		"onChatParticipant:plushveil.mcp-tools-chat",
     "workspaceContains:tools/**/*.json",
     "workspaceContains:tools/**/*.md"
   ],
 	"contributes": {
 		"mcpServerDefinitionProviders": [
 			{
-				"id": "tools",
+				"id": "plushveil.mcp-tools",
 				"label": "Tools"
 			}
 		],
 		"chat": {
 			"participants": [
 				{
-					"id": "tools",
-					"label": "Tools",
-					"kind": "remote"
+					"id": "plushveil.mcp-tools-chat",
+					"name": "Tools",
+					"fullName": "Tools",
+					"description": "Which tool defined in your tools folder should be run to help with your request?"
 				}
 			]
 		}
