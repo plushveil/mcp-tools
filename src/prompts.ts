@@ -75,11 +75,12 @@ export async function onToolListChanged (tools: string[]) : Promise<void> {
   }
 
   for (const tool of tools.map(t => url.fileURLToPath(t))) {
+    if (fs.existsSync(tool) === false) continue
     watchers.push(fs.watch(tool, { recursive: true, persistent: false }, async (_e, filename) => {
       if (filename?.toLowerCase().endsWith('.prompt.md')) {
         const filePath = path.join(tool, filename)
         if (prompts.find(p => p.file === filePath)) return
-        onToolListChanged(tools)
+        try { onToolListChanged(tools) } catch {}
       }
     }))
   }

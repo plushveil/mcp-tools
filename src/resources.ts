@@ -21,9 +21,10 @@ export async function onToolListChanged (tools: string[]) : Promise<void> {
     const output = path.resolve(url.fileURLToPath(tool), 'output')
     if (!fs.existsSync(output)) {
       const parent = path.dirname(output)
+      if (!fs.existsSync(parent)) continue
       watchers.push(fs.watch(parent, { persistent: false, recursive: false }, (_eventType, filename) => {
         if (filename !== 'output') return
-        onToolListChanged(tools)
+        try { onToolListChanged(tools) } catch {}
       }))
       continue
     }
