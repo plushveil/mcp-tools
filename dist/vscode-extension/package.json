@@ -2,7 +2,7 @@
 	"name": "mcp-tools",
 	"displayName": "MCP Tools",
 	"description": "Exposes your tool folders as MCP Tools.",
-	"version": "0.0.23",
+	"version": "0.0.24",
 	"publisher": "plushveil",
 	"license": "MIT",
 	"icon": "icon.png",
@@ -16,7 +16,6 @@
 	"main": "index.js",
 	"activationEvents": [
 		"onStartupFinished",
-		"onChatParticipant:plushveil.mcp-tools-chat",
     "workspaceContains:tools/**/*.json",
     "workspaceContains:tools/**/*.md"
   ],
@@ -26,17 +25,7 @@
 				"id": "plushveil.mcp-tools",
 				"label": "Tools"
 			}
-		],
-		"chat": {
-			"participants": [
-				{
-					"id": "plushveil.mcp-tools-chat",
-					"name": "Tools",
-					"fullName": "Tools",
-					"description": "Which tool defined in your tools folder should be run to help with your request?"
-				}
-			]
-		}
+		]
 	},
 	"scripts": {
 		"build": "npm run build:clean && npm run build:docs && npm run build:extension && npm run build:package",

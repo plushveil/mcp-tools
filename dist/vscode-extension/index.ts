@@ -31,12 +31,6 @@ export function activate (context: vscode.ExtensionContext) {
     }
   })
   context.subscriptions.push(mcp)
-
-  const chatParticipant = vscode.chat.createChatParticipant('plushveil.mcp-tools-chat', async (request: vscode.ChatRequest, context: vscode.ChatContext, stream: vscode.ChatResponseStream, token: vscode.CancellationToken | undefined): Promise<{}> => {
-    stream.markdown('So you are interested in calling tools from the plushveil.mcp, I\'ll try getting a list of tools soon...')
-    return {}
-  })
-  context.subscriptions.push(chatParticipant)
 }
 
 /**
