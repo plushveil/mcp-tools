@@ -27,7 +27,7 @@ jobs:
       run: cd dist/vscode-extension && npm run build
 
     - name: Package extension
-      run: cd dist/vscode-extension && npm run package
+      run: cd dist/vscode-extension && npm run package && vsce ls --tree
 
     - name: Create build artifacts
       uses: actions/upload-artifact@v6
