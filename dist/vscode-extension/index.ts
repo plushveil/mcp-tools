@@ -2,7 +2,11 @@ import * as path from 'node:path'
 import * as cmd from 'node:child_process'
 import * as vscode from 'vscode'
 
-export function activate(context: vscode.ExtensionContext) {
+/**
+ *
+ */
+export function activate (context: vscode.ExtensionContext) {
+  console.log('Extension "MCP Tools" is now active.')
   if (!__dirname) throw new Error('__dirname is undefined')
   let node
   try {
@@ -33,4 +37,11 @@ export function activate(context: vscode.ExtensionContext) {
     return {}
   })
   context.subscriptions.push(chatParticipant)
+}
+
+/**
+ *
+ */
+export function deactivate () {
+  console.log('Extension "MCP Tools" is now deactivated.')
 }
