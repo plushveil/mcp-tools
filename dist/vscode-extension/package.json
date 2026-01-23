@@ -47,7 +47,7 @@
 		"build:package:build": "cd ../npm-package && npm install && npm run build && cd ../vscode-extension",
 		"build:package:copy": "mkdir -p mcp && cp -r ../npm-package/* mcp",
 		"build:package:clean": "rm -rf mcp/node_modules",
-		"package": "vsce package"
+		"package": "vsce package && vsce ls --tree"
 	},
 	"devDependencies": {
 		"@types/node": "25.x",
