@@ -41,7 +41,7 @@ export async function onToolListChanged (tools: string[]) : Promise<void> {
     const root = path.join(__dirname, '..')
     const promptFiles = [
       path.join(root, '.github', 'prompts', 'create-tool.prompt.md'),
-      path.resolve(fs.realpathSync(__filename), 'create-tool.prompt.md'),
+      path.resolve(path.dirname(fs.realpathSync(__filename)), 'create-tool.prompt.md'),
       path.resolve('..', 'create-tool.prompt.md'),
       path.resolve('mcp', 'create-tool.prompt.md'),
       path.resolve('create-tool.prompt.md')
