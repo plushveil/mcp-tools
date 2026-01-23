@@ -171,8 +171,10 @@ async function getAvailableTools(folder: string) : Promise<Record<string, Tool>>
       watchers.push(fs.watch(toolConfigPath, { persistent: false, recursive: false }, () => { onToolFolderChange() }))
     }
 
-    const toolConfig = JSON.parse(fs.readFileSync(toolConfigPath, 'utf-8'))
-    updatedTools[url.pathToFileURL(toolPath).href] = toolConfig as Tool
+    try {
+      const toolConfig = JSON.parse(fs.readFileSync(toolConfigPath, 'utf-8'))
+      updatedTools[url.pathToFileURL(toolPath).href] = toolConfig as Tool
+    } catch {}
   }
   return updatedTools
 }
