@@ -1,6 +1,6 @@
 {
   "name": "@plushveil/mcp-tools",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "main": "mcp-tools.js",
   "bin": {
     "tools": "mcp-tools.js"
