@@ -10,8 +10,6 @@ import * as cmd from 'node:child_process'
 
 import * as resources from './resources.ts'
 import * as prompts from './prompts.ts'
-import * as importModule from './import.ts'
-
 import * as workspace from './workspace.ts'
 
 import ask from '../utils/ask.ts'
@@ -19,6 +17,8 @@ import notify from '../utils/notify.ts'
 import sample from '../utils/sampling.ts'
 import console from '../utils/console.ts'
 import unboundProgress from '../utils/progress.ts'
+
+let sideEffects = false
 
 type ToolPackageJSON = {
   main?: string,
@@ -92,6 +92,7 @@ export async function callTool (name: string, input: Record<string, string>, _me
       }
     }
 
+    sideEffectsBeforeFirstToolCall()
     const progress = _meta?.progressToken ? unboundProgress.bind(null, _meta.progressToken) : () => {}
     const nodeModulesPath = path.join(rootPath, 'node_modules')
     if (!fs.existsSync(nodeModulesPath)) {
@@ -115,6 +116,17 @@ export async function callTool (name: string, input: Record<string, string>, _me
       isError: true,
     }
   }
+}
+
+/**
+ *
+ */
+function sideEffectsBeforeFirstToolCall () : void {
+  if (sideEffects) return
+  sideEffects = true
+
+  // @ts-expect-error -- IGNORE --
+  global.console = console
 }
 
 /**
@@ -207,9 +219,6 @@ function updateTools (updatedTools: Record<string, Tool>) : void {
 
   Object.keys(tools).forEach(key => { delete tools[key] })
   Object.assign(tools, updatedTools)
-  importModule.onToolListChanged(Object.entries(tools).map(([root, { main }]) => {
-    return url.pathToFileURL(path.join(url.fileURLToPath(root), main ?? ''))
-  }))
 
   notify('notifications/tools/list_changed')
   resources.onToolListChanged(Object.keys(tools))
