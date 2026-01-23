@@ -21,9 +21,9 @@ export function activate (context: vscode.ExtensionContext) {
     onDidChangeMcpServerDefinitions: didChangeEmitter.event,
     provideMcpServerDefinitions: () => {
       const env = process.env as Record<string, string>
-      const output: vscode.McpServerDefinition[] = [
-        new vscode.McpStdioServerDefinition('plushveil.mcp-tools', node, [path.resolve(__dirname, 'mcp.js')], env)
-      ]
+      const mcp = new vscode.McpStdioServerDefinition('plushveil.mcp-tools', node, [path.resolve(__dirname, 'mcp.js')], env)
+      mcp.cwd = vscode.workspace.workspaceFolders?.find(f => f.uri)?.uri
+      const output: vscode.McpServerDefinition[] = [mcp]
       return output
     },
     resolveMcpServerDefinition: async (definition: vscode.McpServerDefinition) => {

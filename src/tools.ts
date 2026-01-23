@@ -134,11 +134,7 @@ function sideEffectsBeforeFirstToolCall () : void {
  */
 async function onToolFolderChange () : Promise<void> {
   const roots = workspace.getRootDirectories()
-
-  while (watchers.length > 0) {
-    const watcher = watchers.pop()
-    if (watcher) watcher.close()
-  }
+  while (watchers.length > 0) watchers.pop()?.close()
 
   const updatedTools: Record<string, Tool> = {}
   for (const root of roots) {
@@ -154,10 +150,17 @@ async function onToolFolderChange () : Promise<void> {
     }
 
     if (watchParent) {
-      watchers.push(fs.watch(url.fileURLToPath(root.uri), { persistent: false, recursive: false }, (eventType, filename) => {
-        if (!filename) return
-        if (allToolsFolders.includes(filename)) onToolFolderChange()
-      }))
+      const interval = setInterval(() => {
+        for (const toolsFolder of allToolsFolders) {
+          const fullPath = path.join(url.fileURLToPath(root.uri), toolsFolder)
+          if (fs.existsSync(fullPath)) {
+            clearInterval(interval)
+            onToolFolderChange()
+            break
+          }
+        }
+      }, 10000).unref()
+      watchers.push({ close: () => { clearInterval(interval) } } as fs.FSWatcher)
     }
   }
 
