@@ -143,7 +143,6 @@ async function onToolFolderChange () : Promise<void> {
       const fullPath = path.join(url.fileURLToPath(root.uri), toolsFolder)
       if (!(fs.existsSync(fullPath))) { watchParent = true; continue }
       Object.assign(updatedTools, await getAvailableTools(fullPath))
-      console.debug('tools.ts:146', watchers.length)
       watchers.push(fs.watch(fullPath, { persistent: false, recursive: false }, (eventType, filename) => {
         if (!filename) return
         onToolFolderChange()
@@ -187,7 +186,6 @@ async function getAvailableTools(folder: string) : Promise<Record<string, Tool>>
       watchers.push({ close: () => { clearInterval(interval) } } as fs.FSWatcher)
       continue
     } else {
-      console.debug('tools.ts:191', watchers.length)
       watchers.push(fs.watch(toolConfigPath, { persistent: false, recursive: false }, () => { onToolFolderChange() }))
     }
 
