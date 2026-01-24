@@ -61,6 +61,7 @@ export async function onToolListChanged (tools: string[]) : Promise<void> {
     while (watchers.length) watchers.pop()?.close()
     for (const prompt of newPrompts) {
       prompts.push(prompt)
+      console.debug('prompts.ts:64', watchers.length)
       watchers.push(fs.watch(prompt.file, { persistent: false, recursive: false }, async () => {
         if (!fs.existsSync(prompt.file)) {
           const index = prompts.findIndex(p => p.file === prompt.file)
@@ -76,6 +77,7 @@ export async function onToolListChanged (tools: string[]) : Promise<void> {
 
   for (const tool of tools.map(t => url.fileURLToPath(t))) {
     if (fs.existsSync(tool) === false) continue
+    console.debug('prompts.ts:80', watchers.length)
     watchers.push(fs.watch(tool, { recursive: false, persistent: false }, async (_e, filename) => {
       if (filename?.toLowerCase().endsWith('.prompt.md')) {
         const filePath = path.join(tool, filename)

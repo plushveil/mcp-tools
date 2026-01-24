@@ -22,12 +22,14 @@ export async function onToolListChanged (tools: string[]) : Promise<void> {
     if (!fs.existsSync(output)) {
       const parent = path.dirname(output)
       if (!fs.existsSync(parent)) continue
+      console.debug('resources.ts:25', watchers.length)
       watchers.push(fs.watch(parent, { persistent: false, recursive: false }, (_eventType, filename) => {
         if (filename !== 'output') return
         try { onToolListChanged(tools) } catch {}
       }))
       continue
     }
+    console.debug('resources.ts:32', watchers.length)
     watchers.push(fs.watch(output, { persistent: false, recursive: false }, (_eventType, filename) => {
       if (!filename) return
       const resource = getResourceFromFilePath(path.resolve(output, filename))
