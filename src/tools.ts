@@ -238,6 +238,12 @@ function updateTools (updatedTools: Record<string, Tool>) : void {
 function installDependencies (cwd: string, progress: AiOperations['progress']) : Promise<void> {
   return new Promise((resolve, reject) => {
     progress(0, 'Installing tool dependencies...')
+    try {
+      cmd.execSync('npm --version', { stdio: 'ignore' })
+    } catch (err) {
+      progress(100, 'Failed to install tool dependencies: npm is not installed or not found in PATH.')
+      return resolve()
+    }
 
     const npm = cmd.spawn('npm', ['install', '--progress=true'], { cwd, stdio: ['ignore', 'pipe', 'pipe'], env: { ...process.env, FORCE_COLOR: 'true' } })
     npm.stdout.on('data', (data : Buffer) => {
