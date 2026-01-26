@@ -1,12 +1,12 @@
 {
   "name": "@plushveil/mcp-tools",
-  "version": "1.0.22",
+  "version": "1.0.23",
   "main": "mcp-tools.js",
   "bin": {
     "tools": "tools.js"
   },
   "type": "module",
-  "types": "mcp-tools.d.ts",
+  "types": "types.d.ts",
   "scripts": {
     "build": "npm run build:clean && npm run build:package && npm run build:bin && npm run build:types && npm run build:docs",
     "build:clean": "rm -rf mcp-tools.js mcp-tools.d.ts methods src utils README.md LICENSE",
